@@ -1,6 +1,4 @@
 import json
-from multiprocessing.dummy import active_children
-from telnetlib import theNULL
 import time
 import subprocess
 import threading
