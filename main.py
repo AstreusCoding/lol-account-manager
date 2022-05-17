@@ -83,7 +83,7 @@ def delete_account(account_id, cached_id):
         file.write(json.dumps(global_account_data, indent = 4))
 
 def login_account(account_id):
-    account_data = cached_account_data[account_id]
+    account_data = cached_account_data[str(int(account_id) - 1)]
     if account_data:
         subprocess.call(["C:\Riot Games\League of Legends\LeagueClient.exe"])
         time.sleep(2.5)
@@ -218,7 +218,7 @@ def setup():
         [gui.ProgressBar(thread_amount, orientation = "h", size = (50 , 20), key = "-progressbar-")],
     ]
     
-    loading_window = gui.Window("Loading Program", loading_window_layout)
+    loading_window = gui.Window("Loading Program", loading_window_layout, icon="logo.ico")
     
     while True:
         event, values = loading_window.read(100)
@@ -234,13 +234,14 @@ def setup():
          
 def main():
     global global_account_data
+    global cached_account_data
     if len(active_threads) > 0: # should not even happen, but checking just in case.
         time.sleep(1)
         main()
         return
 
     headings = [
-        ["Id", (2,1), ""],
+        ["ID", (2,1), ""],
         ["Name", (14,1), ""],
         ["Level", (6,1), ""],
         ["Region", (6,1), ""],
@@ -254,7 +255,7 @@ def main():
     delete_dict = {}
     total_games_played = 0
     
-    for account in range(len(cached_account_data)):
+    for account in cached_account_data:
         summoner_data = cached_account_data[str(account)][0]
         account_data = cached_account_data[str(account)][1]
         output_row = []
@@ -280,7 +281,7 @@ def main():
    
     layout = layout_header + output_rows + bottom_layout
 
-    main_window = gui.Window("Account List", layout)
+    main_window = gui.Window("Account List", layout, icon="logo.ico")
 
     while True:
         event, values = main_window.read()
