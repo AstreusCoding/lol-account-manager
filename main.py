@@ -324,9 +324,6 @@ def main():
         if event in login_dict:
             login_account(login_dict[event])
 
-
-        
-
 if __name__ == "__main__":
     setup()
     main()
