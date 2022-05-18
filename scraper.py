@@ -8,7 +8,7 @@ def load_summoner_page(region, summoner_name):
     
     response = requests.get(league_of_graphs_url + region + "/" + summoner_name + "/last-30-days", headers=headers)
     if response.status_code != 200:
-        print("load_summoner_page failed with error code: " + response.status_code)
+        print("load_summoner_page failed with error code: " + str(response.status_code))
         return
         
     soup = BeautifulSoup(response.content, 'html.parser')
