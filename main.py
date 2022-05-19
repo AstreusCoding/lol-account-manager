@@ -2,13 +2,14 @@ import json
 import time
 import subprocess
 import threading
-import PySimpleGUI as gui
 import os
-import scraper
-import zlib
 import random
 
-from base64 import urlsafe_b64encode as b64e, urlsafe_b64decode as b64d
+import scraper
+import utilities
+
+import PySimpleGUI as gui
+
 from tabulate import tabulate
 from pynput.keyboard import Key, Controller
 
@@ -18,17 +19,11 @@ global_account_data = None
 cached_account_data = {}
 active_threads = {}
 
-def obscure(data):
-    return b64e(zlib.compress(data, 9))
-
-def unobscure(obscured):
-    return zlib.decompress(b64d(obscured))
-
 def load_account_to_cache(account, thread_number):
     account_data = global_account_data[str(account)]
     
     try:
-        unobscured_password = unobscure(str(account_data["password"]).encode()).decode()
+        unobscured_password = utilities.unobscure(str(account_data["password"]).encode()).decode()
     except:
         unobscured_password = str(account_data["password"])
     
@@ -131,7 +126,7 @@ def add_account_list():
                     "region": "",
                     "summoner_name": "",
                     "login_name": username,
-                    "password": obscure(str(password).encode()).decode()
+                    "password": utilities.obscure(str(password).encode()).decode()
                 }
                 load_account_to_cache(str(random_number), None)
             gui.popup("Accounts have been successfully added!")
@@ -175,7 +170,7 @@ def add_account():
                 "region": values["-region-"],
                 "summoner_name": values["-summoner-"],
                 "login_name": values["-username-"],
-                "password": obscure(str(values["-password-"]).encode()).decode()
+                "password": utilities.obscure(str(values["-password-"]).encode()).decode()
             }
 
             load_account_to_cache(str(random_number),  None)
@@ -204,7 +199,7 @@ def fix_data_file():
         
         if event == "-continue-":
             for account in global_account_data:
-                global_account_data[account]["password"] = obscure(global_account_data[account]["password"].encode()).decode()
+                global_account_data[account]["password"] = utilities.obscure(global_account_data[account]["password"].encode()).decode()
                 
             with open("account_data.json", "w") as file:
                 file.write(json.dumps(global_account_data, indent = 4))
