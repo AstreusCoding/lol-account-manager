@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
+print("test")
+
 league_of_graphs_url = "https://www.leagueofgraphs.com/summoner/"
 headers = {'User-Agent': 'My User Agent 1.0'}
 
