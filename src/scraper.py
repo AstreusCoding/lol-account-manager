@@ -1,17 +1,15 @@
 import requests
 from bs4 import BeautifulSoup
 
-print("test")
-
 league_of_graphs_url = "https://www.leagueofgraphs.com/summoner/"
 headers = {'User-Agent': 'My User Agent 1.0'}
 
 def load_summoner_page(region, summoner_name):
     
-    response = requests.get(league_of_graphs_url + region + "/" + summoner_name + "/last-30-days", headers=headers)
+    response = requests.get(league_of_graphs_url + str.lower(region) + "/" + summoner_name + "/last-30-days", headers=headers)
     if response.status_code != 200:
         print("load_summoner_page failed with error code: " + str(response.status_code))
-        return
+        return None, None
         
     soup = BeautifulSoup(response.content, 'html.parser')
 
