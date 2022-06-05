@@ -53,11 +53,12 @@ def save_to_table(table_name, column_names, values):
             cursor.execute(f'''SELECT * FROM {table_name} WHERE {column_names[0]} = {values[0]} ''')
         else:
             cursor.execute(f"INSERT INTO {table_name} {column_names} VALUES {values}")
+        
+        cursor.close()
         connection.commit()
+        
     except Exception as e:
         print(e)
-    finally:
-        cursor.close()
         
 def load_from_table(table_name, column_name, value):
     if connection is None:

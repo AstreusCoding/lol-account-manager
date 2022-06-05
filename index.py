@@ -8,10 +8,4 @@ database.create_table("account", ("id", "summoner_username", "region", "username
 
 accounts = load_accounts()
 
-account = Account(1, "test", "euw", "test", "test")
-account.load()
-account.username = "test3"
-account.save()
-account.fetch_summoner_web_data()
-
 tf(interface.main, accounts)

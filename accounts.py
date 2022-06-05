@@ -1,6 +1,12 @@
+from operator import truediv
+import subprocess
+import time
 import database
 import webscraper
 from utilities import thread_function as tf
+
+from pynput.keyboard import Key, Controller
+keyboard = Controller()
 
 accounts = []
 
@@ -8,7 +14,7 @@ def load_accounts():
     global accounts
     sql_accounts = database.load_all_from_table("account")
     for account in sql_accounts:
-        account = Account(account[0], account[1], account[2], account[3], account[4])
+        account = Account(id = account[0], summoner_username = account[1], region = account[2], username = account[3], password = account[4])
     return accounts
 
 class Account:
@@ -22,6 +28,7 @@ class Account:
         
         self.data = None
         
+        self.fetch_summoner_web_data()
         accounts.append(self)
     
     def fetch_summoner_web_data(self):
@@ -44,4 +51,14 @@ class Account:
             print("Account not found")
             
     def delete(self):
+        database.create_connection("data")
         database.delete_from_table("account", "id", self.id)
+        
+    def login(self):
+        subprocess.call(["C:\Riot Games\League of Legends\LeagueClient.exe"])
+        time.sleep(2.5)
+        keyboard.type(self.username)
+        keyboard.press(Key.tab)
+        keyboard.release(Key.tab)
+        time.sleep(0.25)
+        keyboard.type(self.password)
