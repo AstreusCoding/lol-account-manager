@@ -1,6 +1,5 @@
 import threading
 
-
 def thread_function(func, *args):
     """
     Wrapper for threading.Thread.

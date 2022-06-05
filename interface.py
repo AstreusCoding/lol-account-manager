@@ -1,10 +1,6 @@
-from json import load
-from multiprocessing import Event
 from random import randint
-from time import sleep
 import PySimpleGUI as gui
 import webscraper
-import gc
 import accounts
 import database
 

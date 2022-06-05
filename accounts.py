@@ -1,4 +1,3 @@
-from operator import truediv
 import subprocess
 import time
 import database

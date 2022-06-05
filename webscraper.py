@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
 
 LOG_URL = "https://www.leagueofgraphs.com/summoner/"
 WOL_URL = "https://wol.gg/stats/"
