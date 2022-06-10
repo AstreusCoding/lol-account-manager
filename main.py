@@ -1,6 +1,6 @@
 import database
 import interface
-from accounts import Account, load_accounts
+from accounts import load_accounts
 from utilities import thread_function as tf
 
 connection = database.create_connection("data")
