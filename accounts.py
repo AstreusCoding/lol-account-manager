@@ -3,6 +3,7 @@ import time
 import database
 import webscraper
 from utilities import thread_function as tf
+from dotenv import load_dotenv
 
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
@@ -13,7 +14,7 @@ def load_accounts():
     global accounts
     sql_accounts = database.load_all_from_table("account")
     for account in sql_accounts:
-        account = Account(id = account[0], summoner_username = account[1], region = account[2], username = account[3], password = account[4])
+        account = Account(id=account[0], summoner_username=account[1], region=account[2], username=account[3], password=account[4])
     return accounts
 
 class Account:
