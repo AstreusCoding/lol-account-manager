@@ -145,6 +145,7 @@ def add_account_logic(window, event, values):
                 return
 
         database.create_connection("data")
+        # TODO: wtf is that???? gotta fix that
         account = accounts.Account(id=randint(1, 999999999), summoner_username=values["-summoner-"], region=values["-region-"], username=values["-username-"], password=values["-password-"])
         account.save()
         

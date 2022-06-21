@@ -163,3 +163,5 @@ cython_debug/
 # Custom
 .sqlite
 data.sqlite
+secret.key
+.vscode
