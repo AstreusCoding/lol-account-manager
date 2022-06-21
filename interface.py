@@ -5,7 +5,6 @@ import accounts
 import database
 
 HEADINGS = [["ID", (2,1)],["Name", (14,1)], ["Level", (10,1)], ["Region", (10,1)],["Rank", (10,1)],["Games 30D", (10,1)], ["Hours Played", (10,1)]]
-HEADINGS[1:-1]
 
 REGIONS = ["BR", "EUNE", "EUW", "JP", "KR", "LAN", "LAS", "NA", "OCE", "RU", "TR"]
 
@@ -29,8 +28,8 @@ def create_account_list_layout():
     layout = [[gui.Column(placeholders, size=(821, 320), scrollable=True, vertical_scroll_only=True, pad=1, key="-test-")]]
 
     buttons = [[gui.Button("Add Account", size=(10,1), key="-add-account-"),
-            #gui.Button("Clear Accounts", size=(12,1), key="-clear-accounts-"),
-            gui.Text("??? matches played in the last 30 days", key="-games-played-"),
+                gui.Button("Clear Accounts", size=(12,1), key="-clear-accounts-"),
+                gui.Text("??? matches played in the last 30 days", key="-games-played-"),
             ]]
 
     layout = layout_header + layout + buttons
@@ -134,6 +133,12 @@ def account_list_logic(window, event, values, accounts):
         window["-add-account-menu-"].update(visible=True)
         window["-add-account-menu-"].unhide_row()
         current_tab = "add_account"
+    elif event == "-clear-accounts-":
+        accounts.clear()
+        database.create_connection()
+        database.delete_all_from_table("account")
+        clear_account_list(window)
+        update_account_list(window, accounts)
         
 def add_account_logic(window, event, values):
     global current_tab
@@ -145,8 +150,7 @@ def add_account_logic(window, event, values):
                 return
 
         database.create_connection("data")
-        # TODO: wtf is that???? gotta fix that
-        account = accounts.Account(id=randint(1, 999999999), summoner_username=values["-summoner-"], region=values["-region-"], username=values["-username-"], password=values["-password-"])
+        account = accounts.Account(id=database.count_from_table("account", "id")[0][0], summoner_username=values["-summoner-"], region=values["-region-"], username=values["-username-"], password=values["-password-"])
         account.save()
         
         window["-add-account-menu-"].update(visible=False)

@@ -29,7 +29,7 @@ def create_table():
     global connection
     if connection is None:
         print("connection is None")
-        return
+        raise Exception
     
     try:
         cursor = connection.cursor()
@@ -119,5 +119,16 @@ def count_from_table(table_name, column_name):
         print(e)
     finally:
         cursor.close()
+
+def delete_all_from_table(table_name):
+    if connection is None:
+        print("connection is None")
+        return
+    
+    cursor = connection.cursor()
+    cursor.execute(f"DELETE FROM {table_name}")
+    connection.commit()
+    cursor.close()
+    
 
 
