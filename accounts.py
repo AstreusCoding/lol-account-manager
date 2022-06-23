@@ -8,6 +8,8 @@ from cryptography.fernet import Fernet
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
 
+REGULAR_PATH = "D:\\Games\\League Of Legends\\LeagueClient.exe"
+
 accounts = []
 
 def load_accounts():
@@ -62,7 +64,7 @@ class Account:
         database.delete_from_table("account", "id", self.id)
         
     def login(self):
-        subprocess.call("D:\\Games\\League Of Legends\\LeagueClient.exe")
+        subprocess.call(REGULAR_PATH)
         time.sleep(2.5)
         keyboard.type(self.username)
         keyboard.press(Key.tab)
