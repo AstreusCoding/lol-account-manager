@@ -169,6 +169,9 @@ def add_account_logic(window, event, values):
         
         current_tab = "account_list"
 
+def change_path_logic():
+    pass
+
 def main(accounts = None):
     global current_tab
     global login_dict
