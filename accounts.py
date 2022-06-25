@@ -1,9 +1,13 @@
+from array import typecodes
+from msilib.schema import Error
 import subprocess
 import time
 import database
 import webscraper
 from utilities import thread_function as tf
 from cryptography.fernet import Fernet
+from dotenv import load_dotenv
+import os
 
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
@@ -12,7 +16,6 @@ accounts = []
 
 def load_accounts():
     global accounts
-    encryption = Encryption()
     sql_accounts = database.load_all_from_table("account")
     for account in sql_accounts:
         account = Account(id=account[0], summoner_username=account[1], region=account[2], username=account[3], password=account[4])
@@ -21,7 +24,6 @@ def load_accounts():
 class Account:
     
     def __init__(self, id: int, username: str = "", region: str = "", password: str = "", summoner_username: str = ""):
-        self.path = "D:\\Games\\League Of Legends\\LeagueClient.exe"
         self.id = id
         self.summoner_username = summoner_username
         self.region = region
@@ -63,8 +65,9 @@ class Account:
         database.delete_from_table("account", "id", self.id)
         
     def login(self):
-        subprocess.call(self.path)
-        time.sleep(2.5)
+        load_dotenv()
+        subprocess.call(os.getenv("LEAGUE_PATH"))
+        time.sleep(2)
         keyboard.type(self.username)
         keyboard.press(Key.tab)
         keyboard.release(Key.tab)

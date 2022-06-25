@@ -3,6 +3,7 @@ import PySimpleGUI as gui
 import webscraper
 import accounts
 import database
+import os
 
 HEADINGS = [["ID", (2,1)],["Name", (14,1)], ["Level", (10,1)], ["Region", (10,1)],["Rank", (10,1)],["Games 30D", (10,1)], ["Hours Played", (10,1)]]
 
@@ -29,6 +30,7 @@ def create_account_list_layout():
 
     buttons = [[gui.Button("Add Account", size=(10,1), key="-add-account-"),
                 gui.Button("Clear Accounts", size=(12,1), key="-clear-accounts-"),
+                gui.Button("Change Path", size=(10, 1), key = "-change-path-"),
                 gui.Text("??? matches played in the last 30 days", key="-games-played-"),
             ]]
 
@@ -51,6 +53,9 @@ def create_add_account_layout():
     ]
     
     return layout
+
+def create_change_path_layout():
+    pass
 
 def clear_account_list(window):
     global total_games
@@ -125,6 +130,9 @@ def account_list_logic(window, event, values, accounts):
         clear_account_list(window)
         update_account_list(window, accounts)
     elif event in login_dict:
+        if not os.getenv("LEAGUE_PATH"):
+            gui.popup("The path to league of legends has not been set correctly! Please set it with the button or set it manually in the .env file.")
+            return
         login_dict[event][0].login()  
     elif event == "-add-account-":
         window["-account-list-"].update(visible=False)
@@ -139,6 +147,13 @@ def account_list_logic(window, event, values, accounts):
         database.delete_all_from_table("account")
         clear_account_list(window)
         update_account_list(window, accounts)
+    elif event == "-change-path-":
+        window["-account-list-"].update(visible=False)
+        window["-account-list-"].hide_row()
+
+        window["-add-account-menu-"].update(visible=True)
+        window["-add-account-menu-"].unhide_row()
+
         
 def add_account_logic(window, event, values):
     global current_tab
@@ -177,9 +192,9 @@ def main(accounts = None):
     global login_dict
     global delete_dict
     
-    layout = [[gui.Column(create_account_list_layout(), key="-account-list-")], [gui.Column(create_add_account_layout(), key="-add-account-menu-", visible=False)]]
+    layout = [[gui.Column(create_account_list_layout(), key="-account-list-")], [gui.Column(create_add_account_layout(), key="-add-account-menu-", visible=False)], [gui.Column(create_change_path_layout(), key="-change-path-menu-", visible=False)]]
 
-    window = gui.Window("Account Manager", layout, icon="logo.ico")
+    window = gui.Window("League of Legends Account Manager", layout, icon="logo.ico")
 
     while True:
         event, values = window.read(500)
@@ -191,6 +206,8 @@ def main(accounts = None):
             account_list_logic(window, event, values, accounts)
         elif current_tab == "add_account":
             add_account_logic(window, event, values)
+        elif current_tab == "change_path":
+            change_path_logic(window, event, values)
             
 if __name__ == "__main__":
     main()

@@ -1,5 +1,7 @@
 import database
 import accounts as acc
+import os
+from dotenv import load_dotenv
 from utilities import thread_function as tf
 
 def test_database():
@@ -20,4 +22,12 @@ def test_id_creation():
     for x in sql:
         print(x[0])
 
-test_id_creation()
+def test_path_loadenv():
+    with open('.env', 'w') as file:
+        file.write('LEAGUE_PATH=D:\Games\League Of Legends\LeagueClient.exe')
+    file.close()
+    load_dotenv()
+    if os.path.exists(os.getenv('LEAGUE_PATH')):
+        print("YES")
+
+test_path_loadenv()
