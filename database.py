@@ -33,7 +33,7 @@ def create_table():
     
     try:
         cursor = connection.cursor()
-        cursor.execute(f"CREATE TABLE account(" + 
+        cursor.execute(f"CREATE TABLE IF NOT EXISTS account(" + 
             "id INTEGER," +
             "summoner_username VARCHAR," +
             "region  VARCHAR," +

@@ -4,6 +4,7 @@ import webscraper
 import accounts
 import database
 import os
+from dotenv import load_dotenv
 
 HEADINGS = [["ID", (2,1)],["Name", (14,1)], ["Level", (10,1)], ["Region", (10,1)],["Rank", (10,1)],["Games 30D", (10,1)], ["Hours Played", (10,1)]]
 
@@ -48,14 +49,21 @@ def create_add_account_layout():
         [gui.Input("", key="-username-", size=(16,1))],
         [gui.Text("Password")],
         [gui.Input("", password_char="*", key="-password-", size=(16,1))],
-        [gui.Button("submit", key="-submit-", size=(10,1))],
-        [gui.Button("cancel", key="-cancel-", size=(10,1))],
+        [gui.Button("Submit", key="-submit-", size=(10,1))],
+        [gui.Button("Cancel", key="-cancel-", size=(10,1))],
     ]
     
     return layout
 
 def create_change_path_layout():
-    pass
+    layout = [
+        [gui.Text("League Path")],
+        [gui.Input("", key="-league-path-", size=(40, 1))],
+        [gui.Button("Submit", key="-submit-change-path-", size=(10, 1))],
+        [gui.Button("Cancel", key="-cancel-change-path-", size=(10, 1))],
+    ]
+
+    return layout
 
 def clear_account_list(window):
     global total_games
@@ -151,8 +159,9 @@ def account_list_logic(window, event, values, accounts):
         window["-account-list-"].update(visible=False)
         window["-account-list-"].hide_row()
 
-        window["-add-account-menu-"].update(visible=True)
-        window["-add-account-menu-"].unhide_row()
+        window["-change-path-menu-"].update(visible=True)
+        window["-change-path-menu-"].unhide_row()
+        current_tab = "change_path"
 
         
 def add_account_logic(window, event, values):
@@ -184,8 +193,31 @@ def add_account_logic(window, event, values):
         
         current_tab = "account_list"
 
-def change_path_logic():
-    pass
+def change_path_logic(window, event, values):
+    global current_tab
+    if event == "-submit-change-path-":
+        if values["-league-path-"] == "":
+            gui.popup("Enter a path.")
+            return
+        else:
+            with open('.env', 'w') as file:
+                file.write(f'LEAGUE_PATH={values["-league-path-"]}')
+            load_dotenv()
+            window["-change-path-menu-"].update(visible=False)
+            window["-change-path-menu-"].hide_row()
+            
+            window["-account-list-"].update(visible=True)
+            window["-account-list-"].unhide_row()
+            
+            current_tab = "account_list"
+    elif event == "-cancel-change-path-":
+        window["-change-path-menu-"].update(visible=False)
+        window["-change-path-menu-"].hide_row()
+        
+        window["-account-list-"].update(visible=True)
+        window["-account-list-"].unhide_row()
+        
+        current_tab = "account_list"
 
 def main(accounts = None):
     global current_tab
@@ -209,5 +241,6 @@ def main(accounts = None):
         elif current_tab == "change_path":
             change_path_logic(window, event, values)
             
+
 if __name__ == "__main__":
     main()

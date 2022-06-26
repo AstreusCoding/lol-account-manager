@@ -30,4 +30,18 @@ def test_path_loadenv():
     if os.path.exists(os.getenv('LEAGUE_PATH')):
         print("YES")
 
-test_path_loadenv()
+def test_decoding():
+    database.create_connection("data")
+    sql_accounts = database.load_all_from_table("account")
+    for account in sql_accounts:
+        print("password: " + str(account[4]))
+
+def test_check_env():
+    with open('.env', 'r') as file:
+        if 'LEAGUE_PATH' in file.read():
+            print('yes')
+        else:
+            print('no')
+
+
+test_check_env()

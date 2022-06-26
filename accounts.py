@@ -8,6 +8,7 @@ from utilities import thread_function as tf
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 import os
+import base64
 
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
@@ -15,10 +16,11 @@ keyboard = Controller()
 accounts = []
 
 def load_accounts():
+    encryption = Encryption()
     global accounts
     sql_accounts = database.load_all_from_table("account")
     for account in sql_accounts:
-        account = Account(id=account[0], summoner_username=account[1], region=account[2], username=account[3], password=account[4])
+        account = Account(id=account[0], summoner_username=account[1], region=account[2], username=account[3], password=encryption.decrypt_message(account[4]))
     return accounts
 
 class Account:
@@ -43,9 +45,7 @@ class Account:
     
     def save(self):
         encryption = Encryption()
-        print(self.password)
         encrypted = encryption.encrypt_message(self.password)
-        print(encrypted)
         database.save_to_table("account", ("id", "summoner_username", "region", "username", "password"), (self.id, self.summoner_username, self.region, self.username, encrypted))
 
     def load(self):
