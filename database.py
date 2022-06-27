@@ -10,7 +10,7 @@ def wipe_database():
     
     try:
         c = connection.cursor()
-        c.execute("DROP TABLE accounts")
+        c.execute("DROP TABLE account")
     except Exception as e:
         print(e)
     finally:

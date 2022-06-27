@@ -91,7 +91,8 @@ class Encryption:
         """
         Load the previously generated key
         """
-        return open("secret.key", "rb").read()
+        with open("secret.key", "rb") as key:
+            return key.read()
 
     def encrypt_message(self, message: str):
         """
