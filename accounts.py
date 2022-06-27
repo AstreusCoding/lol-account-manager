@@ -8,7 +8,6 @@ from utilities import thread_function as tf
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 import os
-import base64
 
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
