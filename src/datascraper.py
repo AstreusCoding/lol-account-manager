@@ -47,10 +47,10 @@ class DataScraper:
                     return await response.content.read()
         except Exception as e:
             logger.error(f"Failed to get page. {e}")
-            return None
+            return ""
 
     @unsync
-    def scrape_account_data(self, display_name, region) -> dict:
+    def scrape_account_data(self, display_name, region) -> tuple:
         """
         Scrapes the account data from league of graphs.
 
@@ -65,8 +65,8 @@ class DataScraper:
 
         page = self.get_page(url).result()
 
-        if page is None:
-            return
+        if page == "":
+            return (None, None)
 
         soup = bs(page, "html.parser")
 
@@ -76,7 +76,7 @@ class DataScraper:
             logger.error(
                 f"There is no summoner on {str.lower(region)} named {display_name}"
             )
-            return
+            return (None, None)
 
         summoner_data = {
             "level": int(
