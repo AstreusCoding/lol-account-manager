@@ -33,6 +33,7 @@ Then run tests by typing tox into your preferred console.
 * Write documentation.
 * Fix bugs.
 * Use TKinter for gui.
+* Write tests
 
 ## Authors
 

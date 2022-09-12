@@ -50,7 +50,7 @@ class DataScraper:
             return None
 
     @unsync
-    def scrape_account_data(self, username, region) -> dict:
+    def scrape_account_data(self, display_name, region) -> dict:
         """
         Scrapes the account data from league of graphs.
 
@@ -61,12 +61,12 @@ class DataScraper:
         Returns:
             dict: The account data.
         """
-        url = f"{LOG_URL}{str.lower(region)}/{username}/last-30-days"
+        url = f"{LOG_URL}{str.lower(region)}/{display_name}/last-30-days"
 
         page = self.get_page(url).result()
 
         if page is None:
-            return None
+            return
 
         soup = bs(page, "html.parser")
 
@@ -74,7 +74,7 @@ class DataScraper:
 
         if not account_exists:
             logger.error(
-                f"There is no summoner on {str.lower(region)} named {username}"
+                f"There is no summoner on {str.lower(region)} named {display_name}"
             )
             return
 
@@ -94,9 +94,10 @@ class DataScraper:
             ),
         }
 
-        return summoner_data
+        return summoner_data, display_name
 
-    def scrape_several_accounts(self, accounts: list) -> list:
+    @unsync
+    def scrape_several_accounts(self, accounts: list) -> bool:
         """
         Scrapes several accounts.
 
@@ -113,7 +114,16 @@ class DataScraper:
 
         results = [task.result() for task in tasks]
 
-        for i, account in enumerate(accounts):
-            account.data = results[i]
+        # loop through the results and add them to the accounts
+        for result in results:
+            if result is None:
+                continue
+
+            account_data, display_name = result
+
+            for account in accounts:
+                if account.display_name == display_name:
+                    account.data = account_data
+                    break
 
         return True

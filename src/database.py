@@ -7,7 +7,6 @@ import sqlite3
 from logzero import logger
 from account import Account
 
-
 connection = None
 
 
@@ -233,9 +232,9 @@ class Database:
             self.connection.commit()
             logger.info("Account added to database.")
 
-    def remove_account(self, username) -> None:
+    def remove_account_by_username(self, username) -> None:
         """
-        Removes an account from the database.
+        Removes an account with the given username.
         """
         if self.establish_connection() is None:
             return
@@ -244,6 +243,26 @@ class Database:
             logger.info("Removing account...")
             cursor = self.connection.cursor()
             cursor.execute(f"DELETE FROM accounts WHERE username = '{username}'")
+        except Exception as e:
+            logger.error(f"Failed to remove account. {e}")
+        finally:
+            cursor.close()
+            self.connection.commit()
+            logger.info("Account removed.")
+
+    def remove_account_by_display_name(self, display_name) -> None:
+        """
+        Removes an account with the given display name.
+        """
+        if self.establish_connection() is None:
+            return
+
+        try:
+            logger.info("Removing account...")
+            cursor = self.connection.cursor()
+            cursor.execute(
+                f"DELETE FROM accounts WHERE display_name = '{display_name}'"
+            )
         except Exception as e:
             logger.error(f"Failed to remove account. {e}")
         finally:
