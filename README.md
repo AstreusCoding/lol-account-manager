@@ -7,7 +7,7 @@
 
 This project was created to alleviate the struggle of having a lot of accounts / smurfs.
 You can very easily add accounts and quickly log in to the accounts, which also supports opening multiple
-clients so you never have to worry about logging out or closing previous clients. 
+clients so you never have to worry about logging out or closing previous clients.
 ## Installation
 
 Not written yet
@@ -37,4 +37,3 @@ Then run tests by typing tox into your preferred console.
 ## Authors
 
 - [@CasperDoesCoding](https://www.github.com/CasperDoesCoding)
-

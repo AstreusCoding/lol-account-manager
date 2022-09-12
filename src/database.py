@@ -12,7 +12,7 @@ connection = None
 
 class Database:
 
-    connection = None
+    connection: sqlite3.Connection
 
     def __init__(self) -> None:
         self.establish_connection()
@@ -32,7 +32,6 @@ class Database:
                 self.connection = sqlite3.connect("database.sqlite")
             except Exception as e:
                 logger.error(f"Failed to establish database connection. {e}")
-                return None
             finally:
                 logger.info("Database connection established.")
                 connection = self.connection
@@ -49,7 +48,7 @@ class Database:
         Creates the data tables.
         """
         if self.establish_connection() is None:
-            return False
+            return
 
         try:
             logger.info("Creating data tables...")
@@ -63,7 +62,7 @@ class Database:
             cursor.close()
             self.connection.commit()
             logger.info("Data tables created.")
-            return True
+            return
 
     def get_account_by_username(self, username) -> Account:
         """
@@ -122,7 +121,7 @@ class Database:
         Gets all accounts from the database.
         """
         if self.establish_connection() is None:
-            return
+            return []
 
         try:
             logger.info("Getting all accounts...")
@@ -150,7 +149,7 @@ class Database:
         Updates an account's password.
         """
         if self.establish_connection() is None:
-            return False
+            return None
 
         try:
             logger.info("Updating account...")
@@ -164,14 +163,14 @@ class Database:
             cursor.close()
             self.connection.commit()
             logger.info("Account updated.")
-            return True
+            return None
 
     def update_account_region(self, username, region) -> None:
         """
         Updates an account's region.
         """
         if self.establish_connection() is None:
-            return False
+            return None
 
         try:
             logger.info("Updating account...")
@@ -185,14 +184,14 @@ class Database:
             cursor.close()
             self.connection.commit()
             logger.info("Account updated.")
-            return True
+            return None
 
     def update_account_display_name(self, username, display_name) -> None:
         """
         Updates an account's display name.
         """
         if self.establish_connection() is None:
-            return False
+            return None
 
         try:
             logger.info("Updating account...")
@@ -206,18 +205,18 @@ class Database:
             cursor.close()
             self.connection.commit()
             logger.info("Account updated.")
-            return True
+            return None
 
     def add_account(self, username, password, region, display_name=None) -> None:
         """
         Adds an account to the database.
         """
         if self.establish_connection() is None:
-            return False
+            return None
 
         if self.get_account_by_username(username) is not None:
             logger.info("Account already exists.")
-            return False
+            return None
 
         try:
             logger.info("Adding account to database...")
@@ -237,7 +236,7 @@ class Database:
         Removes an account with the given username.
         """
         if self.establish_connection() is None:
-            return
+            return None
 
         try:
             logger.info("Removing account...")
@@ -255,7 +254,7 @@ class Database:
         Removes an account with the given display name.
         """
         if self.establish_connection() is None:
-            return
+            return None
 
         try:
             logger.info("Removing account...")
