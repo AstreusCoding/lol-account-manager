@@ -20,13 +20,12 @@ pip install tox
 Then run tests by typing tox into your preferred console.
 ## TODO
 
-* Add a way to add accounts to the database through gui and cli.
-* Add a way to remove accounts from the database through gui and cli.
-* Add a way to update accounts in the database through gui and cli.
-* Add a way to view accounts in the database through gui and cli.
-* Add a way to view the data of accounts through gui and cli.
+* Add a way to add accounts to the database through gui.
+* Add a way to remove accounts from the database through gui.
+* Add a way to update accounts in the database through gui.
+* Add a way to view accounts in the database through gui.
+* Add a way to view the data of accounts through gui.
 * Fix gui user interface.
-* Fix cli interface.
 * Add riot api support.
 * Write tests.
 * Write setup tutorial.
