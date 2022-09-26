@@ -8,7 +8,7 @@ flake8==5.0.4
 identify==2.5.5
 iniconfig==1.1.1
 mccabe==0.7.0
-mypy==0.971
+mypy==0.981
 mypy-extensions==0.4.3
 nodeenv==1.7.0
 packaging==21.3
