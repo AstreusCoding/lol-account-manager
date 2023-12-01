@@ -1,0 +1,14 @@
+black
+colorama
+flake8
+mypy
+mypy-extensions
+pipreqs
+pre-commit
+py
+pyflakes
+pytest
+setuptools
+tox
+types-setuptools
+typing_extensions
