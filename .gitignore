@@ -5,6 +5,9 @@ open-env.bat
 # ignore the old folder
 old/
 
+# ignore vscode settings
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
