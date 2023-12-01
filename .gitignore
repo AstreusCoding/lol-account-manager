@@ -2,6 +2,9 @@
 run-pre-commit.bat
 open-env.bat
 
+# ignore the old folder
+old/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
