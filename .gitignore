@@ -1,5 +1,6 @@
-# ignore run-pre-commit.bat
+# ignore my qol batch files
 run-pre-commit.bat
+open-env.bat
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
